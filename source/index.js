@@ -1,4 +1,4 @@
-import { partial } from '@yurkimus/functions'
+import { defer, partial } from '@yurkimus/functions'
 
 export let Drivers = /** @type {const} */ ({
   Minio: 'Minio',
@@ -11,7 +11,7 @@ let DriverConnectors = {
     connect: () =>
       Promise
         .resolve()
-        .then(partial(console.log, `[minio] connecting`))
+        .then(defer(console.log, `[minio] connecting`))
         .then(() => instance.listBuckets())
         .then(partial(console.log, `[minio] connected\n`))
         .catch(reason => {
@@ -22,15 +22,15 @@ let DriverConnectors = {
     disconnect: () =>
       Promise
         .resolve()
-        .then(partial(console.log, `[minio] disconnecting`))
-        .then(partial(console.log, `[minio] disconnected`)),
+        .then(defer(console.log, `[minio] disconnecting`))
+        .then(defer(console.log, `[minio] disconnected`)),
   }),
 
   [Drivers.Neo4j]: instance => ({
     connect: () =>
       Promise
         .resolve()
-        .then(partial(console.log, `[neo4j] connecting`))
+        .then(defer(console.log, `[neo4j] connecting`))
         .then(() => instance.getServerInfo())
         .then(partial(console.log, `[neo4j] connected\n`))
         .catch(reason => {
@@ -41,7 +41,7 @@ let DriverConnectors = {
     disconnect: () =>
       Promise
         .resolve()
-        .then(partial(console.log, `[neo4j] disconnecting`))
+        .then(defer(console.log, `[neo4j] disconnecting`))
         .then(() => instance.close())
         .then(partial(console.log, `[neo4j] disconnected`)),
   }),
@@ -50,7 +50,7 @@ let DriverConnectors = {
     connect: () =>
       Promise
         .resolve()
-        .then(partial(console.log, `[postgres] connecting`))
+        .then(defer(console.log, `[postgres] connecting`))
         .then(() => instance`select current_database()`)
         .then(partial(console.log, `[postgres] connected\n`))
         .catch(reason => {
@@ -61,7 +61,7 @@ let DriverConnectors = {
     disconnect: () =>
       Promise
         .resolve()
-        .then(partial(console.log, `[postgres] disconnecting`))
+        .then(defer(console.log, `[postgres] disconnecting`))
         .then(() => instance.end())
         .then(partial(console.log, `[postgres] disconnected`)),
   }),
