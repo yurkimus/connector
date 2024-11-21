@@ -1,3 +1,5 @@
+import { partial } from '@yurkimus/functions'
+
 export let Drivers = /** @type {const} */ ({
   Minio: 'Minio',
   Neo4j: 'Neo4j',
