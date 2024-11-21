@@ -74,13 +74,9 @@ let DriverConnectors = {
 export let connector = (driver, instance) => {
   switch (driver) {
     case Drivers.Minio:
-      return DriverConnectors[Drivers.Minio](instance)
-
     case Drivers.Neo4j:
-      break
-
     case Drivers.Postgres:
-      break
+      return DriverConnectors[driver](instance)
 
     default:
       throw new TypeError(
