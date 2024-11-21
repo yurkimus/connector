@@ -43,7 +43,7 @@ let DriverConnectors = {
         .resolve()
         .then(defer(console.log, `[neo4j] disconnecting`))
         .then(() => instance.close())
-        .then(partial(console.log, `[neo4j] disconnected`)),
+        .then(defer(console.log, `[neo4j] disconnected`)),
   }),
 
   [Drivers.Postgres]: instance => ({
@@ -63,7 +63,7 @@ let DriverConnectors = {
         .resolve()
         .then(defer(console.log, `[postgres] disconnecting`))
         .then(() => instance.end())
-        .then(partial(console.log, `[postgres] disconnected`)),
+        .then(defer(console.log, `[postgres] disconnected`)),
   }),
 }
 
