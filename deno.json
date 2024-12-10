@@ -1,9 +1,9 @@
 {
-  "version": "0.1.0",
+  "version": "0.0.1",
 
   "imports": {
-    "@yurkimus/types": "https://raw.githubusercontent.com/yurkimus/types/main/source/index.js",
-    "@yurkimus/curry": "https://raw.githubusercontent.com/yurkimus/curry/main/source/index.js",
+    "@yurkimus/types": "npm:@yurkimus/types@0.2.1",
+    "@yurkimus/curry": "npm:@yurkimus/curry@0.1.0",
     "@yurkimus/functions": "https://raw.githubusercontent.com/yurkimus/functions/main/source/index.js"
   }
 }
