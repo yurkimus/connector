@@ -9,9 +9,5 @@
   },
   "exports": {
     "import": "./source/index.js"
-  },
-  "dependencies": {
-    "@yurkimus/curry": "0.1.0",
-    "@yurkimus/types": "0.2.1"
   }
 }

@@ -1,87 +1,79 @@
-import { defer, partial } from '@yurkimus/functions'
+export var Drivers = /** @type {const} */ ([
+  'Minio',
+  'Neo4j',
+  'Postgres',
+])
 
-export let Drivers = /** @type {const} */ ({
-  Minio: 'Minio',
-  Neo4j: 'Neo4j',
-  Postgres: 'Postgres',
-})
-
-let DriverConnectors = {
-  [Drivers.Minio]: instance => ({
+export var DriverConnectors = {
+  'Minio': instance => ({
     connect: () =>
       Promise
         .resolve()
-        .then(defer(console.log, `[minio] connecting`))
+        .then(() => console.log('[Minio] connecting'))
         .then(() => instance.listBuckets())
-        .then(partial(console.log, `[minio] connected\n`))
+        .then(buckets => console.log('[Minio] connected', buckets))
         .catch(reason => {
-          console.log(`[minio] failed\n`, reason)
+          console.error(`[Minio] connection failed\n`, reason)
           throw reason
         }),
 
     disconnect: () =>
       Promise
         .resolve()
-        .then(defer(console.log, `[minio] disconnecting`))
-        .then(defer(console.log, `[minio] disconnected`)),
+        .then(() => console.log('[Minio] disconnecting'))
+        .then(() => console.log('[Minio] disconnected')),
   }),
 
-  [Drivers.Neo4j]: instance => ({
+  'Neo4j': instance => ({
     connect: () =>
       Promise
         .resolve()
-        .then(defer(console.log, `[neo4j] connecting`))
+        .then(() => console.log('[Neo4j] connecting'))
         .then(() => instance.getServerInfo())
-        .then(partial(console.log, `[neo4j] connected\n`))
+        .then(info => console.log('[Neo4j] connected', info))
         .catch(reason => {
-          console.log(`[neo4j] failed\n`, reason)
+          console.error(`[Neo4j] connection failed\n`, reason)
           throw reason
         }),
 
     disconnect: () =>
       Promise
         .resolve()
-        .then(defer(console.log, `[neo4j] disconnecting`))
+        .then(() => console.log('[Neo4j] disconnecting'))
         .then(() => instance.close())
-        .then(defer(console.log, `[neo4j] disconnected`)),
+        .then(() => console.log('[Neo4j] disconnected')),
   }),
 
-  [Drivers.Postgres]: instance => ({
+  'Postgres': instance => ({
     connect: () =>
       Promise
         .resolve()
-        .then(defer(console.log, `[postgres] connecting`))
+        .then(() => console.log('[Postgres] connecting'))
         .then(() => instance`select current_database()`)
-        .then(partial(console.log, `[postgres] connected\n`))
+        .then(info => console.log('[Postgres] connected', info))
         .catch(reason => {
-          console.log(`[postgres] failed\n`, reason)
+          console.error(`[Postgres] failed\n`, reason)
           throw reason
         }),
 
     disconnect: () =>
       Promise
         .resolve()
-        .then(defer(console.log, `[postgres] disconnecting`))
+        .then(() => console.log('[Postgres] disconnecting'))
         .then(() => instance.end())
-        .then(defer(console.log, `[postgres] disconnected`)),
+        .then(() => console.log('[Postgres] disconnected')),
   }),
 }
 
 /**
- * @param {keyof typeof Drivers} driver
+ * @param {typeof Drivers[number]} driver
  * @param {*} instance
  */
-export let connector = (driver, instance) => {
-  switch (driver) {
-    case Drivers.Minio:
-    case Drivers.Neo4j:
-    case Drivers.Postgres:
-      return DriverConnectors[driver](instance)
+export var connector = (driver, instance) => {
+  if (!Drivers.includes(driver))
+    throw TypeError(
+      `Parameter 'driver' must be one of: '${Drivers.join(', ')}'`,
+    )
 
-    default:
-      throw new TypeError(
-        `'driver' must be one of: `
-          + `'${Object.values(Drivers).join(', ')}'.`,
-      )
-  }
+  return DriverConnectors[driver](instance)
 }
