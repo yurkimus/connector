@@ -69,7 +69,7 @@ export var DriverConnectors = {
  * @param {typeof Drivers[number]} driver
  * @param {*} instance
  */
-export var conneƒct = (driver, instance) => {
+export var connect = (driver, instance) => {
   if (!Drivers.includes(driver))
     throw TypeError(
       `Parameter 'driver' must be one of: '${Drivers.join(', ')}'`,
