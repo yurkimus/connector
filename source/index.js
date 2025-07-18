@@ -1,9 +1,16 @@
+/**
+ * @typedef {(typeof Drivers)[number]} Driver
+ */
+
 export var Drivers = /** @type {const} */ ([
   'Minio',
   'Neo4j',
   'Postgres',
 ])
 
+/**
+ * @type {Record<Driver, Record<'connect' | 'disconnect', () => Promise>>}
+ */
 export var DriverConnectors = {
   'Minio': instance => ({
     connect: () =>
@@ -66,8 +73,10 @@ export var DriverConnectors = {
 }
 
 /**
- * @param {typeof Drivers[number]} driver
+ * @param {Driver} driver
  * @param {*} instance
+ *
+ * @returns {(typeof DriverConnectors)[Driver]}
  */
 export var connect = (driver, instance) => {
   if (!Drivers.includes(driver))

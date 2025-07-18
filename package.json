@@ -8,6 +8,7 @@
     "url": "https://github.com/yurkimus/connector.git"
   },
   "exports": {
-    "import": "./source/index.js"
+    "import": "./source/index.js",
+    "types": "./source/index.d.ts"
   }
 }
